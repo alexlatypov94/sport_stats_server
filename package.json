@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc src/server.ts",
-    "start": "nodemon -e ts -w ./src/server.ts -x npm run dev",
+    "start": "nodemon -e ts -w ./src -x npm run dev",
     "dev": "ts-node ./src/server.ts",
     "lint": "eslint --ext .js,.ts --fix ./src/",
     "test": "cross-env DEBUG=rs:* jest --testMatch \"<rootDir>/test/e2e/test/*.test.js\" --noStackTrace --runInBand"
@@ -51,6 +51,7 @@
     "swagger-ui-express": "^4.4.0",
     "ts-node": "^10.8.1",
     "typescript": "^4.7.4",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "yamljs": "^0.3.0"
   }
 }

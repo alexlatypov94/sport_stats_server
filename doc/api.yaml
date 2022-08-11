@@ -1,0 +1,188 @@
+openapi: 3.0.0
+info:
+  title: Trello Service
+  description: Let's try to create a competitor for Trello!
+  version: 1.0.0
+
+servers:
+  - url: /
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        login:
+          type: string
+    Board:
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        columns:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              title:
+                type: string
+              order:
+                type: integer
+    Task:
+      required:
+        - title
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        order:
+          type: number
+        description:
+          type: string
+        userId:
+          type: string
+  responses:
+    UnauthorizedError:
+      description: Access token is missing or invalid
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - bearerAuth: []
+
+paths:
+  /countries:
+    get:
+      tags:
+        - Countries
+      summary: Get all countries
+      description: Gets all countries
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+    post:
+      tags:
+        - Countries
+      summary: Add country
+      description: Add a new country
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              title: example
+              properties:
+                name:
+                  type: string
+                  description: The user's name
+                login:
+                  type: string
+                  description: The user's login
+                password:
+                  type: string
+                  description: The user's password
+              required:
+                - name
+      responses:
+        201:
+          description: The user has been created.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        400:
+          description: Bad request
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+  /countries/{countryId}:
+    parameters:
+      - name: countryId
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      tags:
+        - Countries
+      summary: Get country by ID
+      description: Gets a country by ID
+        e.g. “/users/123”
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        404:
+          description: User not found
+    put:
+      tags:
+        - Countries
+      summary: Update a country
+      description: Updates a country by ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              title: example
+              properties:
+                name:
+                  type: string
+                  description: The user's name
+                login:
+                  type: string
+                  description: The user's login
+                password:
+                  type: string
+                  description: The user's password
+              required:
+                - name
+      responses:
+        200:
+          description: The user has been updated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        400:
+          description: Bad request
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+    delete:
+      tags:
+        - Countries
+      summary: Delete country
+      description: Deletes country by ID
+      responses:
+        204:
+          description: The user has been deleted
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        404:
+          description: User not found
+
